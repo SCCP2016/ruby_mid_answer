@@ -8,17 +8,19 @@ M1 M1 M3 ... Mn
 W1 W2 W3 ... Wm
 ```
 出力
-
+```
 O1 O2 O3 ... Oz
-ここでzはn, mの内小さい方の数
+```
 
+ここでzはn, mの内小さい方の数
+```
 # 入力例
 SuzukiMakoto OgataRyo TanakaMichael TanakaTaro
 KobayashiSaki AizuMisaki ShibuyaRin
 
 # 出力例
 SuzukiSaki OgataMisaki TanakaRin
-
+```
 ---
 
 非常に難しい問題。
