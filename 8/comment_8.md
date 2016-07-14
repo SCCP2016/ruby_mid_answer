@@ -8,43 +8,9 @@
 
 など様々な方法がある
 
+以下は末尾から最初にキャピタルに衝突するまでを一つずつ切り落としていく例。コードが冗長で可読性が高くない
 
 ```
-men = ["SuzukiMakoto", "OgataRyo",  "TanakaMichael",  "TanakaTaro"]
-women = ["KobayashiSaki",  "AizuMisaki",  "ShibuyaRin"]
-
-# ファーストネームを取り出す
-def get_fstn(name)
-    # 先頭を切り落とし「aからzまでのRangeの中に先頭から取り出したアルファベットが含まれる限り先頭を切り落とし続ける」という反復処理を行う
-    name.chars.drop(1).drop_while{|n| ('a'..'z').include?(n) }.join
-end
-
-# ファミリーネームを取り出す
-def get_fmn(name)
-    # first nameを空文字列に置換することによってlast nameを取り出す:
-    name.gsub(get_fstn(name), "")
-end
-
-puts men.zip(women).select{|mw| mw[0] != nil && mw[1] != nil }.
-map{|mw| get_fmn(mw[0]) + get_fstn(mw[1])}.join("\t")
-
-```
-
-```
-# 正規表現を使う場合
-men = ["SuzukiMakoto", "OgataRyo",  "TanakaMichael",  "TanakaTaro"]
-women = ["KobayashiSaki",  "AizuMisaki",  "ShibuyaRin"]
-def split_name(name)
-    /([A-Z][a-z]+)([A-Z][a-z]+)/ =~ name
-    [$1, $2]
-end
-
-puts men.zip(women).select{|mw| mw[0] != nil && mw[1] != nil }.
-map{|mw| split_name(mw[0])[0] + split_name(mw[1])[1]}.join("\t")
-```
-
-```
-# 手続き型の解答。理解しにくい
 male = STDIN.gets.split
 female = STDIN.gets.split
 
@@ -82,20 +48,62 @@ for i in 0..n-1 do
     puts split_name(male[i])[0] + split_name(female[i])[1]
 end
 
+
 # RubyTaro
 
 # lname: RubyTar
 # fname: o
-
 # lname: RubyTa
 # fname: or
-
 # lname: RubyT
 # fname: ora
-
 # lname: Ruby
 # fname: oraT
-
 # LstName: Ruby
 # FstName: Taro
+```
+
+次に、先頭を切り落としたうえで、次のキャピタルのアルファベットに衝突するまで一つずつ切り落としていく例。高階関数を用いているので処理の内容が読みやすく理解しやすい。
+
+```
+men = ["SuzukiMakoto", "OgataRyo",  "TanakaMichael",  "TanakaTaro"]
+women = ["KobayashiSaki",  "AizuMisaki",  "ShibuyaRin"]
+
+# ファーストネームを取り出す
+def get_fstn(name)
+    # 先頭を切り落とし「aからzまでのRangeの中に先頭から取り出したアルファベットが含まれる限り先頭を切り落とし続ける」という反復処理を行う
+    name.chars.drop(1).drop_while{|n| ('a'..'z').include?(n) }.join
+end
+
+# ファミリーネームを取り出す
+def get_fmn(name)
+    # first nameを空文字列に置換することによってlast nameを取り出す:
+    name.gsub(get_fstn(name), "")
+end
+
+puts men.zip(women).select{|mw| mw[0] != nil && mw[1] != nil }.
+map{|mw| get_fmn(mw[0]) + get_fstn(mw[1])}.join("\t")
+
+```
+
+最後に正規表現を用いる方法。
+
+正規表現は文字列のパターンを記述するための**言語**で、そのパターンに合致する文字列を抽象化して表現したもの。
+
+「大文字から始まってそれ以外は小文字のアルファベットの文字列」や「n桁の数字の文字列」など、その他にも様々なパターンを表現することができる。
+
+* [参考資料1](http://www.megasoft.co.jp/mifes/seiki/)
+* [参考資料2](http://www.megasoft.co.jp/mifes/seiki/meta.html)
+
+```
+# 正規表現を使う場合
+men = ["SuzukiMakoto", "OgataRyo",  "TanakaMichael",  "TanakaTaro"]
+women = ["KobayashiSaki",  "AizuMisaki",  "ShibuyaRin"]
+def split_name(name)
+    /([A-Z][a-z]+)([A-Z][a-z]+)/ =~ name
+    [$1, $2]
+end
+
+puts men.zip(women).select{|mw| mw[0] != nil && mw[1] != nil }.
+map{|mw| split_name(mw[0])[0] + split_name(mw[1])[1]}.join("\t")
 ```
