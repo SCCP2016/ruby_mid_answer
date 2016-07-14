@@ -1,13 +1,34 @@
-Rangeとブロック付きメソッドをうまく使うと綺麗に書ける。
+手続き型のコードではこんな感じ。標準入力で受け取った数字の回数文forループで処理を行い、そのカウンタをディレクトリ名に付与する方法。
+
 permissionの8進数表現はLiteracy1の復習。
 
-前者の解答では、
+```
+dir_name, dir_num = STDIN.gets.split
+dir_num = dir_num.to_i
+
+# C言語では for(i = 1; i <= n; i++){ ... } のようなコードに書き直せる
+for i in 1..dir_num do
+    if i % 2 == 1 then
+        # 奇数の場合にはpermissionを705でmkdir
+        Dir.mkdir(dir_name + i.to_s, 0705)
+    else
+        # 偶数の場合には754でmkdir
+        Dir.mkdir(dir_name + i.to_s, 0754)
+    end
+end
+```
+
+Rangeとブロック付きメソッドとイテレータをうまく使うと綺麗に書ける。
 
 * ディレクトリ名
 * permission(oct)
 
 に関する二次元配列を作成した上で、eachを用いてディレクトリを作成している。
 mapはブロック内の処理を適用した値を要素とした配列を返却するので、dir_with_permという変数にその二次元配列を格納している。
+
+手続き型のコードとの大きな違いは、「ディレクトリの作成に用いる情報群に対してテストコードを書くことができる」という点である。
+
+ディレクトリ名とpermissionの二次元配列を作成しておくことで、ディレクトリ作成の処理を行う前にそれらの情報に対してバリデーションやテストコードを書くことが可能になるのは手続き型のコードでは実現が難しい大きな利点だ。
 
 ```
 # 標準入力をもとに、作成するディレクトリ名の配列を作成する
@@ -25,18 +46,4 @@ dir_with_perm = (1..num).map{|n| [dir_name + n.to_s, n % 2 == 0 ? 0754 : 0705]}
 # 453は8進数で705、492は754である。
 
 dir_with_perm.each{|dir_with_perm| Dir.mkdir(dir_with_perm[0], dir_with_perm[1])}
-```
-
-```
-# 手続き型のコードではこんな感じ。こちらのほうが理解しやすい人もいるかもしれない
-dir_name, dir_num = STDIN.gets.split
-dir_num = dir_num.to_i
-
-for i in 1..dir_num do
-    if i % 2 == 1 then
-        Dir.mkdir(dir_name + i.to_s, 0705)
-    else
-        Dir.mkdir(dir_name + i.to_s, 0754)
-    end
-end
 ```
