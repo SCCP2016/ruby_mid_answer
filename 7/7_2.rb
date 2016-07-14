@@ -11,4 +11,4 @@ end
 
 dict = make_dictionary()
 input = "lymmkuknidpbruimyjkk"
-puts input.chars.map{|n| dict[n]}.join
+puts input.chars.map{|c| dict[c]}.join

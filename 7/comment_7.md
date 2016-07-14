@@ -7,32 +7,30 @@
 * etc...
 
 ```
-# arr = []
-# loop{
-#  line = gets
-#  if line == nil
-#    break
-#  end
-#  arr.push(line)
-#}
-# hash = {}
-# arr.each{|text| hash.store(text[1],text[8])}
-# p hash
+# 標準入力から文字列を受け取りディクショナリを作成する方法
+arr = []
+loop{
+ line = gets
+ if line == nil
+   break
+ end
+ arr.push(line)
+
+hash = {}
+arr.each{|text| hash.store(text[1],text[8])}
+p hash
 # 以下の辞書を作るためのコード↑
-dict = {"q"=>"e",  "t"=>"p",  "b"=>"b",  "n"=>"w",  "j"=>"s",  "u"=>"t",  "w"=>"z",  "c"=>"v",  "k"=>"i",  "d"=>"r",  "p"=>"u",  "h"=>"q",  "x"=>"m",  "z"=>"x",  "v"=>"h",  "l"=>"k",  "s"=>"j",  "i"=>"a",  "f"=>"d",  "r"=>"y",  "a"=>"c",  "m"=>"n",  "e"=>"f",  "y"=>"o",  "g"=>"g",  "o"=>"l"}
-
-cipher = "lymmkuknidpbruimyjkk"
-puts cipher.chars.map{|c| dict[c]}.join
+# dict = {"q"=>"e",  "t"=>"p",  "b"=>"b",  "n"=>"w",  "j"=>"s",  "u"=>"t",  "w"=>"z",  "c"=>"v",  "k"=>"i",  "d"=>"r",  "p"=>"u",  "h"=>"q",  "x"=>"m",  "z"=>"x",  "v"=>"h",  "l"=>"k",  "s"=>"j",  "i"=>"a",  "f"=>"d",  "r"=>"y",  "a"=>"c",  "m"=>"n",  "e"=>"f",  "y"=>"o",  "g"=>"g",  "o"=>"l"}
 ```
 
 ```
-# 別の解法
+# ファイルアクセス用のクラスを用いて中身を読み取りディクショナリを作成する方法
 def make_dictionary()
     dict = {"" => ""}
     # dictというファイルを開き、一行ずつ読み込む
     File.open("./dict") do |file|
         file.each_line do |d|
-            # ダブルクォートで区切り、複合用のハッシュを作成してディクショナリに追加する
+            # ダブルクォートで区切り、復号用のハッシュを作成してディクショナリに追加する
             a = d.split("\"")
             dict[a[1]] = a[3]
         end
@@ -41,6 +39,4 @@ def make_dictionary()
 end
 
 dict = make_dictionary()
-input = "lymmkuknidpbruimyjkk"
-puts input.chars.map{|n| dict[n]}.join
 ```
